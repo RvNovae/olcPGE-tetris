@@ -6,6 +6,7 @@ CMakeFiles\pge_tetris_2.dir\main.cpp.obj: ..\olcPixelGameEngine.h
 CMakeFiles\pge_tetris_2.dir\main.cpp.obj: ..\playfield.h
 CMakeFiles\pge_tetris_2.dir\main.cpp.obj: ..\tetrimino.h
 CMakeFiles\pge_tetris_2.dir\main.cpp.obj: ..\tetriminoType.h
+CMakeFiles\pge_tetris_2.dir\main.cpp.obj: ..\userAction.h
 
 CMakeFiles\pge_tetris_2.dir\playfield.cpp.obj: ..\olcPixelGameEngine.h
 CMakeFiles\pge_tetris_2.dir\playfield.cpp.obj: ..\playfield.cpp

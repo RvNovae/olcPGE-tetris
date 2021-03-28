@@ -102,6 +102,9 @@
 		<Unit filename="C:/Users/Oliver/Documents/CODE/pge_tetris_2/tetriminoType.h">
 			<Option target="pge_tetris_2"/>
 		</Unit>
+		<Unit filename="C:/Users/Oliver/Documents/CODE/pge_tetris_2/userAction.h">
+			<Option target="pge_tetris_2"/>
+		</Unit>
 		<Unit filename="C:/Users/Oliver/Documents/CODE/pge_tetris_2/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>

@@ -1,0 +1,4 @@
+C:\Users\Oliver\AppData\Local\JetBrains\Toolbox\apps\CLion\ch-0\203.7717.62\bin\cmake\win\bin\cmake.exe -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - NMake Makefiles" C:\Users\Oliver\Documents\CODE\pge_tetris_2
+-- Configuring done
+-- Generating done
+-- Build files have been written to: C:/Users/Oliver/Documents/CODE/pge_tetris_2/cmake-build-debug

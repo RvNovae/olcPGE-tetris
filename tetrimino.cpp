@@ -1,0 +1,151 @@
+//
+// Created by Oliver on 27.03.21.
+//
+
+#include "tetrimino.h"
+
+Tetrimino::Tetrimino(TetriminoType type) : mType(type) {
+
+    switch (mType) {
+        case TetriminoType::I: {
+            mShape[0][2] = 1;
+            mShape[1][2] = 1;
+            mShape[2][2] = 1;
+            mShape[3][2] = 1;
+            mShape[4][2] = 1;
+            mColor = olc::CYAN;
+        }
+            break;
+        case TetriminoType::O: {
+            mShape[1][1] = 1;
+            mShape[2][1] = 1;
+            mShape[1][2] = 1;
+            mShape[2][2] = 1;
+            mColor = olc::YELLOW;
+        }
+            break;
+        case TetriminoType::T: {
+            mShape[2][1] = 1;
+            mShape[1][2] = 1;
+            mShape[2][2] = 1;
+            mShape[3][2] = 1;
+            mColor = olc::DARK_MAGENTA;
+        }
+            break;
+        case TetriminoType::S: {
+            mShape[2][1] = 1;
+            mShape[3][1] = 1;
+            mShape[2][2] = 1;
+            mShape[1][2] = 1;
+            mColor = olc::GREEN;
+        }
+            break;
+        case TetriminoType::Z: {
+            mShape[1][1] = 1;
+            mShape[2][1] = 1;
+            mShape[2][2] = 1;
+            mShape[3][2] = 1;
+            mColor = olc::RED;
+        }
+            break;
+        case TetriminoType::J: {
+            mShape[1][1] = 1;
+            mShape[1][2] = 1;
+            mShape[2][2] = 1;
+            mShape[3][2] = 1;
+            mColor = olc::BLUE;
+        }
+            break;
+        case TetriminoType::L: {
+            mShape[3][1] = 1;
+            mShape[1][2] = 1;
+            mShape[2][2] = 1;
+            mShape[3][2] = 1;
+            mColor = olc::DARK_YELLOW;
+        }
+            break;
+    }
+}
+
+Tetrimino Tetrimino::random() {
+    auto type = static_cast<TetriminoType>(rand() % typeCount);
+
+    return Tetrimino(type);
+}
+
+void Tetrimino::Draw(olc::PixelGameEngine *pge, Playfield *playfield) {
+    for (int x = 0; x < 5; x++)
+        for (int y = 0; y < 5; y++)
+            if (mShape[x][y] == 1)
+                pge->FillRect(playfield->BlockToReal(mBlockPosition + olc::vi2d(x - 2, y - 2)),
+                              olc::vi2d(10, 10), mColor);
+}
+
+void Tetrimino::MoveLeft(Playfield *playfield) {
+    auto newPosition = mBlockPosition + olc::vi2d(-1, 0);
+    if (canMoveToPosition(playfield, newPosition))
+        mBlockPosition = newPosition;
+}
+
+void Tetrimino::MoveRight(Playfield *playfield) {
+    auto newPosition = mBlockPosition + olc::vi2d(1, 0);
+    if (canMoveToPosition(playfield, newPosition))
+        mBlockPosition = newPosition;
+}
+
+void Tetrimino::MoveDown(Playfield *playfield) {
+    auto newPosition = mBlockPosition + olc::vi2d(0, 1);
+    if (canMoveToPosition(playfield, newPosition)) {
+        mBlockPosition = newPosition;
+        return;
+    }
+    isInFinalPosition = true;
+
+    for (int x = 0; x < 5; x++)
+        for (int y = 0; y < 5; y++)
+            if (mShape[x][y] == 1)
+                playfield->FillBlock(mBlockPosition + olc::vi2d(x - 2, y - 2), mColor);
+}
+
+void Tetrimino::Flip(Playfield *playfield) {
+    std::array<std::array<int8_t, 5>, 5> originalShape = mShape;
+    // Consider all squares one by one
+    for (int x = 0; x < 5 / 2; x++) {
+        // Consider elements in group of 4 in current square
+        for (int y = x; y < 5 - x - 1; y++) {
+            // Store current cell in temp variable
+            int8_t temp = mShape[x][y];
+            // Move values from right to top
+            mShape[x][y] = mShape[y][5 - 1 - x];
+            // Move values from bottom to right
+            mShape[y][5 - 1 - x] = mShape[5 - 1 - x][5 - 1 - y];
+            // Move values from left to bottom
+            mShape[5 - 1 - x][5 - 1 - y] = mShape[5 - 1 - y][x];
+            // Assign temp to left
+            mShape[5 - 1 - y][x] = temp;
+        }
+    }
+
+    if (!canMoveToPosition(playfield, mBlockPosition))
+        mShape = originalShape;
+}
+
+bool Tetrimino::canMoveToPosition(Playfield *playfield, const olc::vi2d &newPosition) {
+    for (int x = 0; x < 5; x++)
+        for (int y = 0; y < 5; y++)
+            if (mShape[x][y] == 1) {
+                auto blockPosition = newPosition + olc::vi2d(x - 2, y - 2);
+                if (blockPosition.x < 0 || blockPosition.y < 0 || blockPosition.x >= 10 || blockPosition.y >= 20)
+                    return false;
+                if (playfield->IsOccupied(blockPosition))
+                    return false;
+            }
+    return true;
+}
+
+void Tetrimino::HardDrop(Playfield *playfield) {
+    while (!isInFinalPosition) {
+        MoveDown(playfield);
+    }
+}
+

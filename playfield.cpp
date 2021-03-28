@@ -112,3 +112,7 @@ float Playfield::getTick() {
     return mTick;
 }
 
+int32_t Playfield::getLinesCleared() {
+    return mLinesCleared;
+}
+

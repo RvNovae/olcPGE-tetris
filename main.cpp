@@ -40,8 +40,10 @@ public:
         mTet.Draw(this, &playfield);
         std::string sScore = "Score: " + std::to_string(playfield.getScore());
         std::string sLevel = "Level: " + std::to_string(playfield.getLevel());
+        std::string sLC = "LC: " + std::to_string(playfield.getLinesCleared());
         DrawString(olc::vi2d(10, 10), sScore);
         DrawString(olc::vi2d(10, 25), sLevel);
+        DrawString(olc::vi2d(10, 40), sLC);
 
         if (mTet.isInFinalPosition) {
             playfield.CheckForFullLines();

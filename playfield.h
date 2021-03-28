@@ -37,6 +37,8 @@ public:
 
     float getTick();
 
+    int32_t getLinesCleared();
+
 private:
     olc::vi2d mRealPos;
     olc::vi2d mSize = {101, 200};
@@ -44,7 +46,7 @@ private:
     olc::Pixel mSpaceColor[10][20] = {olc::BLACK};
     int32_t mScore = 0;
     int8_t mLevel = 0;
-    int32_t mLinesCleared;
+    int32_t mLinesCleared = 0;
     float mTick = 1.0f;
 };
 

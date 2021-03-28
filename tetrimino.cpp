@@ -13,7 +13,8 @@ Tetrimino::Tetrimino(TetriminoType type) : mType(type) {
             mShape[2][2] = 1;
             mShape[3][2] = 1;
             mShape[4][2] = 1;
-            mColor = olc::CYAN;
+            mColor = olc::Pixel(0, 188, 212);
+
         }
             break;
         case TetriminoType::O: {
@@ -21,7 +22,7 @@ Tetrimino::Tetrimino(TetriminoType type) : mType(type) {
             mShape[2][1] = 1;
             mShape[1][2] = 1;
             mShape[2][2] = 1;
-            mColor = olc::YELLOW;
+            mColor = olc::Pixel(255, 235, 59);
         }
             break;
         case TetriminoType::T: {
@@ -29,7 +30,7 @@ Tetrimino::Tetrimino(TetriminoType type) : mType(type) {
             mShape[1][2] = 1;
             mShape[2][2] = 1;
             mShape[3][2] = 1;
-            mColor = olc::DARK_MAGENTA;
+            mColor = olc::Pixel(156, 39, 176);
         }
             break;
         case TetriminoType::S: {
@@ -37,7 +38,7 @@ Tetrimino::Tetrimino(TetriminoType type) : mType(type) {
             mShape[3][1] = 1;
             mShape[2][2] = 1;
             mShape[1][2] = 1;
-            mColor = olc::GREEN;
+            mColor = olc::Pixel(76, 175, 80);
         }
             break;
         case TetriminoType::Z: {
@@ -45,7 +46,7 @@ Tetrimino::Tetrimino(TetriminoType type) : mType(type) {
             mShape[2][1] = 1;
             mShape[2][2] = 1;
             mShape[3][2] = 1;
-            mColor = olc::RED;
+            mColor = olc::Pixel(244, 67, 54);
         }
             break;
         case TetriminoType::J: {
@@ -53,7 +54,7 @@ Tetrimino::Tetrimino(TetriminoType type) : mType(type) {
             mShape[1][2] = 1;
             mShape[2][2] = 1;
             mShape[3][2] = 1;
-            mColor = olc::BLUE;
+            mColor = olc::Pixel(33, 150, 243);
         }
             break;
         case TetriminoType::L: {
@@ -61,7 +62,7 @@ Tetrimino::Tetrimino(TetriminoType type) : mType(type) {
             mShape[1][2] = 1;
             mShape[2][2] = 1;
             mShape[3][2] = 1;
-            mColor = olc::DARK_YELLOW;
+            mColor = olc::Pixel(255, 152, 0);
         }
             break;
     }

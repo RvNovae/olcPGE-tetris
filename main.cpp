@@ -7,7 +7,7 @@
 class Game : public olc::PixelGameEngine {
 public:
     Game() {
-        sAppName = "Example";
+        sAppName = "Tetris";
     }
 
 public:
@@ -31,8 +31,10 @@ public:
             mTet.MoveLeft(&playfield);
         if (GetKey(olc::Key::D).bPressed || GetKey(olc::Key::RIGHT).bPressed)
             mTet.MoveRight(&playfield);
-        if (GetKey(olc::Key::S).bPressed || GetKey(olc::Key::DOWN).bPressed)
+        if (GetKey(olc::Key::S).bPressed || GetKey(olc::Key::DOWN).bPressed) {
             mTet.MoveDown(&playfield);
+            timeSinceLastTick = 0;
+        }
         if (GetKey(olc::Key::W).bPressed || GetKey(olc::Key::UP).bPressed)
             mTet.Flip(&playfield);
         if (GetKey(olc::Key::SPACE).bPressed)
@@ -41,13 +43,13 @@ public:
         playfield.Draw(this);
         mTet.Draw(this, &playfield);
 
+        if (mTet.isInFinalPosition) {
+            playfield.CheckForFullLines();
+            mTet = Tetrimino::random();
+        }
 
         if (timeSinceLastTick >= 1) {
             mTet.MoveDown(&playfield);
-            if (mTet.isInFinalPosition) {
-                playfield.CheckForFullLines();
-                mTet = Tetrimino::random();
-            }
             timeSinceLastTick = 0;
         }
 

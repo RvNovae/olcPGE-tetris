@@ -39,15 +39,16 @@ public:
         playfield.Draw(this);
         mTet.Draw(this, &playfield);
         std::string sScore = "Score: " + std::to_string(playfield.getScore());
+        std::string sLevel = "Level: " + std::to_string(playfield.getLevel());
         DrawString(olc::vi2d(10, 10), sScore);
+        DrawString(olc::vi2d(10, 25), sLevel);
 
         if (mTet.isInFinalPosition) {
             playfield.CheckForFullLines();
             mTet = Tetrimino::random();
-            tick -= 0.01f;
         }
 
-        if (timeSinceLastTick >= tick) {
+        if (timeSinceLastTick >= playfield.getTick()) {
             mTet.MoveDown(&playfield, false);
             timeSinceLastTick = 0;
         }
@@ -87,7 +88,6 @@ public:
 private:
     Tetrimino mTet;
     float timeSinceLastTick = 0.0f;
-    float tick = 1.0f;
     std::map<UserAction, float> buttonHeldTime = {{UserAction::LEFT,  0.0f},
                                                   {UserAction::RIGHT, 0.0f},
                                                   {UserAction::DOWN,  0.0f}};

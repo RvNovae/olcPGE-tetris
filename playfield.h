@@ -29,12 +29,23 @@ public:
 
     void increaseScore(int32_t amount);
 
+    void incrementLinesCleared();
+
+    int8_t getLevel();
+
+    void incrementLevel();
+
+    float getTick();
+
 private:
     olc::vi2d mRealPos;
     olc::vi2d mSize = {101, 200};
     int8_t mSpace[10][20] = {0};
     olc::Pixel mSpaceColor[10][20] = {olc::BLACK};
     int32_t mScore = 0;
+    int8_t mLevel = 0;
+    int32_t mLinesCleared;
+    float mTick = 1.0f;
 };
 
 

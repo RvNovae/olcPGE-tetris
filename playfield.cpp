@@ -50,6 +50,7 @@ void Playfield::ClearLine(int32_t y) {
         mSpace[x][0] = 0;
         mSpaceColor[x][0] = olc::BLACK;
     }
+    incrementLinesCleared();
 }
 
 void Playfield::CheckForFullLines() {
@@ -68,16 +69,16 @@ void Playfield::CheckForFullLines() {
 
     switch (linesCleared) {
         case 1:
-            increaseScore(40);
+            increaseScore(40 * (mLevel + 1));
             break;
         case 2:
-            increaseScore(100);
+            increaseScore(100 * (mLevel + 1));
             break;
         case 3:
-            increaseScore(300);
+            increaseScore(300 * (mLevel + 1));
             break;
         case 4:
-            increaseScore(1200);
+            increaseScore(1200 * (mLevel + 1));
             break;
         default:
             break;
@@ -90,5 +91,24 @@ void Playfield::increaseScore(int32_t amount) {
 
 int32_t Playfield::getScore() {
     return mScore;
+}
+
+void Playfield::incrementLinesCleared() {
+    mLinesCleared++;
+    if (mLinesCleared % 10 == 0)
+        mLevel++;
+}
+
+int8_t Playfield::getLevel() {
+    return mLevel;
+}
+
+void Playfield::incrementLevel() {
+    mLevel++;
+    mTick -= 0.2f;
+}
+
+float Playfield::getTick() {
+    return mTick;
 }
 

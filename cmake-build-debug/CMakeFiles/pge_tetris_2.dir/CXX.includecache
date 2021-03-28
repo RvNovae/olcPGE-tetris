@@ -6,6 +6,14 @@
 
 #IncludeRegexTransform: 
 
+C:/Users/Oliver/Documents/CODE/pge_tetris_2/main.cpp
+olcPixelGameEngine.h
+C:/Users/Oliver/Documents/CODE/pge_tetris_2/olcPixelGameEngine.h
+tetrimino.h
+C:/Users/Oliver/Documents/CODE/pge_tetris_2/tetrimino.h
+userAction.h
+C:/Users/Oliver/Documents/CODE/pge_tetris_2/userAction.h
+
 C:/Users/Oliver/Documents/CODE/pge_tetris_2/olcPixelGameEngine.h
 olcPixelGameEngine.h
 C:/Users/Oliver/Documents/CODE/pge_tetris_2/olcPixelGameEngine.h
@@ -116,11 +124,21 @@ emscripten/html5.h
 emscripten/key_codes.h
 -
 
-C:/Users/Oliver/Documents/CODE/pge_tetris_2/playfield.cpp
-playfield.h
-C:/Users/Oliver/Documents/CODE/pge_tetris_2/playfield.h
-
 C:/Users/Oliver/Documents/CODE/pge_tetris_2/playfield.h
 olcPixelGameEngine.h
 C:/Users/Oliver/Documents/CODE/pge_tetris_2/olcPixelGameEngine.h
+
+C:/Users/Oliver/Documents/CODE/pge_tetris_2/tetrimino.h
+array
+-
+olcPixelGameEngine.h
+C:/Users/Oliver/Documents/CODE/pge_tetris_2/olcPixelGameEngine.h
+tetriminoType.h
+C:/Users/Oliver/Documents/CODE/pge_tetris_2/tetriminoType.h
+playfield.h
+C:/Users/Oliver/Documents/CODE/pge_tetris_2/playfield.h
+
+C:/Users/Oliver/Documents/CODE/pge_tetris_2/tetriminoType.h
+
+C:/Users/Oliver/Documents/CODE/pge_tetris_2/userAction.h
 

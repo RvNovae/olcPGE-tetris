@@ -30,7 +30,7 @@ Tetrimino::Tetrimino(TetriminoType type) : mType(type) {
             mShape[1][2] = 1;
             mShape[2][2] = 1;
             mShape[3][2] = 1;
-            mColor = olc::Pixel(156, 39, 176);
+            mColor = olc::Pixel(103, 58, 183);
         }
             break;
         case TetriminoType::S: {

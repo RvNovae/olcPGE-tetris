@@ -19,7 +19,7 @@ public:
     void CheckForFullLines();
 private:
     olc::vi2d mRealPos;
-    olc::vi2d mSize = {100, 200};
+    olc::vi2d mSize = {101, 200};
     int8_t mSpace[10][20] = {0};
     olc::Pixel mSpaceColor[10][20] = {olc::BLACK};
 };

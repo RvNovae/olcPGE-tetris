@@ -41,7 +41,7 @@ private:
     TetriminoType mType;
     olc::Pixel mColor;
     std::array<std::array<int8_t, 5>, 5> mShape{};
-    olc::vi2d mBlockPosition = {5, 2};
+    olc::vi2d mBlockPosition = {5, 1};
 };
 
 

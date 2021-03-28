@@ -14,7 +14,7 @@ public:
     bool OnUserCreate() override {
         // Called once at the start, so create things here
         srand(time(NULL));
-        playfield = Playfield(olc::vi2d(ScreenWidth() / 2, ScreenHeight() / 2));
+        playfield = Playfield(olc::vi2d((ScreenWidth() / 2) + 25, ScreenHeight() / 2));
         mTet = Tetrimino::random();
         return true;
     }
@@ -40,10 +40,10 @@ public:
         mTet.Draw(this, &playfield);
         std::string sScore = "Score: " + std::to_string(playfield.getScore());
         std::string sLevel = "Level: " + std::to_string(playfield.getLevel());
-        std::string sLC = "LC: " + std::to_string(playfield.getLinesCleared());
-        DrawString(olc::vi2d(10, 10), sScore);
-        DrawString(olc::vi2d(10, 25), sLevel);
-        DrawString(olc::vi2d(10, 40), sLC);
+        std::string sLC = "LC:    " + std::to_string(playfield.getLinesCleared());
+        DrawString(olc::vi2d(10, 20), sScore);
+        DrawString(olc::vi2d(10, 35), sLevel);
+        DrawString(olc::vi2d(10, 50), sLC);
 
         if (mTet.isInFinalPosition) {
             playfield.CheckForFullLines();
@@ -66,7 +66,7 @@ public:
             PerformUserAction(action);
 
         if (button.bHeld) {
-            if (buttonHeldTime[action] >= 0.2) {
+            if (buttonHeldTime[action] >= (mMoveSpeed - (float(playfield.getLevel()) * mMoveSpeed / 4))) {
                 PerformUserAction(action);
                 buttonHeldTime[action] = 0.0f;
             } else
@@ -90,6 +90,7 @@ public:
 private:
     Tetrimino mTet;
     float timeSinceLastTick = 0.0f;
+    float mMoveSpeed = 0.15f;
     std::map<UserAction, float> buttonHeldTime = {{UserAction::LEFT,  0.0f},
                                                   {UserAction::RIGHT, 0.0f},
                                                   {UserAction::DOWN,  0.0f}};

@@ -96,7 +96,7 @@ int32_t Playfield::getScore() {
 void Playfield::incrementLinesCleared() {
     mLinesCleared++;
     if (mLinesCleared % 10 == 0)
-        mLevel++;
+        incrementLevel();
 }
 
 int8_t Playfield::getLevel() {
@@ -105,7 +105,7 @@ int8_t Playfield::getLevel() {
 
 void Playfield::incrementLevel() {
     mLevel++;
-    mTick -= 0.2f;
+    mTick /= 2;
 }
 
 float Playfield::getTick() {

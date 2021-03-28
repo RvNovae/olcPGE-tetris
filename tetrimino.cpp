@@ -12,7 +12,6 @@ Tetrimino::Tetrimino(TetriminoType type) : mType(type) {
             mShape[1][2] = 1;
             mShape[2][2] = 1;
             mShape[3][2] = 1;
-            mShape[4][2] = 1;
             mColor = olc::Pixel(0, 188, 212);
 
         }

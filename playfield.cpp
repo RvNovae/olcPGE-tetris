@@ -53,15 +53,42 @@ void Playfield::ClearLine(int32_t y) {
 }
 
 void Playfield::CheckForFullLines() {
+    int8_t linesCleared = 0;
     for (int y = 0; y < 20; y++) {
         int count = 0;
         for (int x = 0; x < 10; x++) {
             if (mSpace[x][y] == 1)
                 count++;
         }
-
         if (count == 10) {
             ClearLine(y);
+            linesCleared++;
         }
     }
+
+    switch (linesCleared) {
+        case 1:
+            increaseScore(40);
+            break;
+        case 2:
+            increaseScore(100);
+            break;
+        case 3:
+            increaseScore(300);
+            break;
+        case 4:
+            increaseScore(1200);
+            break;
+        default:
+            break;
+    }
 }
+
+void Playfield::increaseScore(int32_t amount) {
+    mScore += amount;
+}
+
+int32_t Playfield::getScore() {
+    return mScore;
+}
+

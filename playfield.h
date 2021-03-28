@@ -10,18 +10,31 @@
 class Playfield {
 public:
     Playfield() = default;
-    explicit Playfield(const olc::vi2d& realPosition);
-    void Draw(olc::PixelGameEngine* pge);
+
+    explicit Playfield(const olc::vi2d &realPosition);
+
+    void Draw(olc::PixelGameEngine *pge);
+
     olc::vi2d BlockToReal(olc::vi2d pos);
-    void FillBlock(const olc::vi2d& position, olc::Pixel color);
+
+    void FillBlock(const olc::vi2d &position, olc::Pixel color);
+
     bool IsOccupied(olc::vi2d pos);
+
     void ClearLine(int32_t y);
+
     void CheckForFullLines();
+
+    int32_t getScore();
+
+    void increaseScore(int32_t amount);
+
 private:
     olc::vi2d mRealPos;
     olc::vi2d mSize = {101, 200};
     int8_t mSpace[10][20] = {0};
     olc::Pixel mSpaceColor[10][20] = {olc::BLACK};
+    int32_t mScore = 0;
 };
 
 

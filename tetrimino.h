@@ -26,7 +26,7 @@ public:
 
     void MoveRight(Playfield *playfield);
 
-    void MoveDown(Playfield *playfield);
+    void MoveDown(Playfield *playfield, bool userTriggered = true);
 
     void Flip(Playfield *playfield);
 

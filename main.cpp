@@ -1,7 +1,5 @@
 #define OLC_PGE_APPLICATION
 
-#include <math.h>
-
 #include "olcPixelGameEngine.h"
 #include "tetrimino.h"
 #include "userAction.h"
@@ -40,6 +38,8 @@ public:
 
         playfield.Draw(this);
         mTet.Draw(this, &playfield);
+        std::string sScore = "Score: " + std::to_string(playfield.getScore());
+        DrawString(olc::vi2d(10, 10), sScore);
 
         if (mTet.isInFinalPosition) {
             playfield.CheckForFullLines();
@@ -48,7 +48,7 @@ public:
         }
 
         if (timeSinceLastTick >= tick) {
-            mTet.MoveDown(&playfield);
+            mTet.MoveDown(&playfield, false);
             timeSinceLastTick = 0;
         }
 

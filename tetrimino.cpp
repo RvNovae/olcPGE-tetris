@@ -94,10 +94,12 @@ void Tetrimino::MoveRight(Playfield *playfield) {
         mBlockPosition = newPosition;
 }
 
-void Tetrimino::MoveDown(Playfield *playfield) {
+void Tetrimino::MoveDown(Playfield *playfield, bool userTriggered) {
     auto newPosition = mBlockPosition + olc::vi2d(0, 1);
     if (canMoveToPosition(playfield, newPosition)) {
         mBlockPosition = newPosition;
+        if (userTriggered)
+            playfield->increaseScore(1);
         return;
     }
     isInFinalPosition = true;

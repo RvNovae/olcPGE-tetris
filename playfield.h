@@ -15,6 +15,8 @@ public:
     olc::vi2d BlockToReal(olc::vi2d pos);
     void FillBlock(const olc::vi2d& position, olc::Pixel color);
     bool IsOccupied(olc::vi2d pos);
+    void ClearLine(int32_t y);
+    void CheckForFullLines();
 private:
     olc::vi2d mRealPos;
     olc::vi2d mSize = {100, 200};

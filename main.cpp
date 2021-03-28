@@ -27,13 +27,13 @@ public:
             for (int y = 0; y < ScreenHeight(); y++)
                 Draw(x, y, olc::Pixel(olc::BLACK));
 
-        if (GetKey(olc::Key::A).bPressed)
+        if (GetKey(olc::Key::A).bPressed || GetKey(olc::Key::LEFT).bPressed)
             mTet.MoveLeft(&playfield);
-        if (GetKey(olc::Key::D).bPressed)
+        if (GetKey(olc::Key::D).bPressed || GetKey(olc::Key::RIGHT).bPressed)
             mTet.MoveRight(&playfield);
-        if (GetKey(olc::Key::S).bPressed)
+        if (GetKey(olc::Key::S).bPressed || GetKey(olc::Key::DOWN).bPressed)
             mTet.MoveDown(&playfield);
-        if (GetKey(olc::Key::W).bPressed)
+        if (GetKey(olc::Key::W).bPressed || GetKey(olc::Key::UP).bPressed)
             mTet.Flip(&playfield);
         if (GetKey(olc::Key::SPACE).bPressed)
             mTet.HardDrop(&playfield);
@@ -44,20 +44,14 @@ public:
 
         if (timeSinceLastTick >= 1) {
             mTet.MoveDown(&playfield);
-            if (mTet.isInFinalPosition)
+            if (mTet.isInFinalPosition) {
+                playfield.CheckForFullLines();
                 mTet = Tetrimino::random();
+            }
             timeSinceLastTick = 0;
         }
 
         return true;
-    }
-
-    olc::vi2d blockToReal() {
-
-    }
-
-    olc::vi2d realToBlock() {
-
     }
 
 private:

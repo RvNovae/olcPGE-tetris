@@ -30,3 +30,38 @@ bool Playfield::IsOccupied(olc::vi2d pos) {
         return true;
     return false;
 }
+
+void Playfield::ClearLine(int32_t y) {
+    for (int x = 0; x < 10; x++) {
+        mSpace[x][y] = 0;
+        mSpaceColor[x][y] = olc::BLACK;
+    }
+
+    for (int row = y; row > 0; row--)
+        for (int x = 0; x < 10; x++) {
+            mSpace[x][row] = mSpace[x][row - 1];
+            mSpaceColor[x][row] = mSpaceColor[x][row - 1];
+
+            mSpace[x][row-1] = 0;
+            mSpaceColor[x][row-1] = olc::BLACK;
+        }
+
+    for (int x = 0; x < 10; x++) {
+        mSpace[x][0] = 0;
+        mSpaceColor[x][0] = olc::BLACK;
+    }
+}
+
+void Playfield::CheckForFullLines() {
+    for (int y = 0; y < 20; y++) {
+        int count = 0;
+        for (int x = 0; x < 10; x++) {
+            if (mSpace[x][y] == 1)
+                count++;
+        }
+
+        if (count == 10) {
+            ClearLine(y);
+        }
+    }
+}

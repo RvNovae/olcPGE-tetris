@@ -52,7 +52,7 @@ public:
 
         if (timeSinceLastTick >= playfield.getTick()) {
             mTet.MoveDown(&playfield, false);
-            timeSinceLastTick = 0;
+            timeSinceLastTick -= playfield.getTick();
         }
 
         return true;

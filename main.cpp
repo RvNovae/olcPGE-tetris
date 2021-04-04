@@ -4,6 +4,11 @@
 #include "tetrimino.h"
 #include "userAction.h"
 
+
+enum class Scene {
+    START, GAME, END
+};
+
 class Game : public olc::PixelGameEngine {
 public:
     Game() {
@@ -13,9 +18,6 @@ public:
 public:
     bool OnUserCreate() override {
         // Called once at the start, so create things here
-        srand(time(NULL));
-        playfield = Playfield(olc::vi2d((ScreenWidth() / 2) + 25, ScreenHeight() / 2));
-        mTet = Tetrimino::random();
         return true;
     }
 
@@ -23,39 +25,81 @@ public:
         // called once per frame
         timeSinceLastTick += fElapsedTime;
 
-        for (int x = 0; x < ScreenWidth(); x++)
-            for (int y = 0; y < ScreenHeight(); y++)
-                Draw(x, y, olc::Pixel(olc::BLACK));
-        if (GetKey(olc::Key::W).bPressed || GetKey(olc::Key::UP).bPressed)
-            mTet.Flip(&playfield);
-        if (GetKey(olc::Key::SPACE).bPressed)
-            mTet.HardDrop(&playfield);
+        Clear(olc::BLACK);
 
-        for (auto const&[key, val] : buttonAction) {
-            if (GetKey(key).bHeld || GetKey(key).bPressed || GetKey(key).bReleased)
-                PrepareUserAction(GetKey(key), val, fElapsedTime);
-        }
+        switch (scene) {
+            case Scene::GAME: {
+                if (GetKey(olc::Key::W).bPressed || GetKey(olc::Key::UP).bPressed)
+                    mTet.Flip(&playfield);
+                if (GetKey(olc::Key::SPACE).bPressed)
+                    mTet.HardDrop(&playfield);
+                if (GetKey(olc::R).bReleased)
+                    StartGame();
 
-        playfield.Draw(this);
-        mTet.Draw(this, &playfield);
-        std::string sScore = "Score: " + std::to_string(playfield.getScore());
-        std::string sLevel = "Level: " + std::to_string(playfield.getLevel());
-        std::string sLC = "LC:    " + std::to_string(playfield.getLinesCleared());
-        DrawString(olc::vi2d(10, 20), sScore);
-        DrawString(olc::vi2d(10, 35), sLevel);
-        DrawString(olc::vi2d(10, 50), sLC);
+                for (auto const&[key, val] : buttonAction) {
+                    if (GetKey(key).bHeld || GetKey(key).bPressed || GetKey(key).bReleased)
+                        PrepareUserAction(GetKey(key), val, fElapsedTime);
+                }
 
-        if (mTet.isInFinalPosition) {
-            playfield.CheckForFullLines();
-            mTet = Tetrimino::random();
-        }
+                if (timeSinceLastTick >= playfield.getTick()) {
+                    mTet.MoveDown(&playfield, false);
+                    timeSinceLastTick -= playfield.getTick();
+                }
 
-        if (timeSinceLastTick >= playfield.getTick()) {
-            mTet.MoveDown(&playfield, false);
-            timeSinceLastTick -= playfield.getTick();
+                playfield.Draw(this);
+                mTet.Draw(this, &playfield);
+                mTet.DrawGhost(this, &playfield);
+
+                std::string sScore = "Score: " + std::to_string(playfield.getScore());
+                std::string sLevel = "Level: " + std::to_string(playfield.getLevel());
+                std::string sLC = "LC:    " + std::to_string(playfield.getLinesCleared());
+                DrawString(olc::vi2d(10, 20), sScore);
+                DrawString(olc::vi2d(10, 35), sLevel);
+                DrawString(olc::vi2d(10, 50), sLC);
+                DrawString({10, 70}, "Next:");
+                mTetNext.Draw(this, &playfield, {10, 80});
+
+                if (mTet.isInFinalPosition) {
+                    for (int i = 0; i < 10; i++)
+                        if (playfield.IsOccupied({i, 1}))
+                            GameOver();
+
+                    playfield.CheckForFullLines();
+                    mTet = mTetNext;
+                    mTetNext = Tetrimino::random();
+                }
+                break;
+            }
+            case Scene::START: {
+                DrawString({(ScreenWidth() / 2) - 20, (ScreenHeight() / 2) - 7}, "START");
+                if (GetKey(olc::ENTER).bPressed) StartGame();
+                break;
+            }
+
+            case Scene::END: {
+                DrawString({(ScreenWidth() / 2) - 20, (ScreenHeight() / 2) - 7}, "GAMEOVER");
+                DrawString({(ScreenWidth() / 2) - 20, (ScreenHeight() / 2) + 13}, "SCORE: " + std::to_string(playfield.getScore()));
+                DrawString({25, ScreenHeight() / 2 + 30}, "Press Enter to play again.");
+
+                if (GetKey(olc::ENTER).bPressed) StartGame();
+
+                break;
+            }
         }
 
         return true;
+    }
+
+    void StartGame() {
+        scene = Scene::GAME;
+        srand(time(NULL));
+        playfield = Playfield(olc::vi2d((ScreenWidth() / 2) + 25, ScreenHeight() / 2));
+        mTet = Tetrimino::random();
+        mTetNext = Tetrimino::random();
+    }
+
+    void GameOver() {
+        scene = Scene::END;
     }
 
     void PrepareUserAction(olc::HWButton button, UserAction action, float fElapsedTime) {
@@ -89,6 +133,7 @@ public:
 
 private:
     Tetrimino mTet;
+    Tetrimino mTetNext;
     float timeSinceLastTick = 0.0f;
     float mMoveSpeed = 0.15f;
     std::map<UserAction, float> buttonHeldTime = {{UserAction::LEFT,  0.0f},
@@ -101,8 +146,8 @@ private:
                                                    {olc::Key::S,     UserAction::DOWN},
                                                    {olc::Key::DOWN,  UserAction::DOWN}};
     Playfield playfield;
+    Scene scene = Scene::START;
 };
-
 
 int main() {
     Game game;

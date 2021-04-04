@@ -22,11 +22,15 @@ public:
 
     void Draw(olc::PixelGameEngine *pge, Playfield *playfield);
 
+    void Draw(olc::PixelGameEngine *pge, Playfield *playfield, const olc::vi2d& pos);
+
+    void DrawGhost(olc::PixelGameEngine *pge, Playfield *playfield);
+
     void MoveLeft(Playfield *playfield);
 
     void MoveRight(Playfield *playfield);
 
-    void MoveDown(Playfield *playfield, bool userTriggered = true);
+    void MoveDown(Playfield *playfield, bool userTriggered = true, bool dry = false);
 
     void Flip(Playfield *playfield);
 

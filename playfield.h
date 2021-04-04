@@ -41,7 +41,7 @@ public:
 
 private:
     olc::vi2d mRealPos;
-    olc::vi2d mSize = {101, 200};
+    olc::vi2d mSize = {101, 201};
     int8_t mSpace[10][20] = {0};
     olc::Pixel mSpaceColor[10][20] = {olc::BLACK};
     int32_t mScore = 0;

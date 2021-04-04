@@ -79,7 +79,16 @@ void Tetrimino::Draw(olc::PixelGameEngine *pge, Playfield *playfield) {
             if (mShape[x][y] == 1)
                 pge->FillRect(playfield->BlockToReal(mBlockPosition + olc::vi2d(x - 2, y - 2)),
                               olc::vi2d(10, 10), mColor);
+
 }
+
+void Tetrimino::Draw(olc::PixelGameEngine *pge, Playfield *playfield, const olc::vi2d &pos) {
+    for (int x = 0; x < 5; x++)
+        for (int y = 0; y < 5; y++)
+            if (mShape[x][y] == 1)
+                pge->FillRect(pos + olc::vi2d(x * 10, y * 10), olc::vi2d(10, 10), mColor);
+}
+
 
 void Tetrimino::MoveLeft(Playfield *playfield) {
     auto newPosition = mBlockPosition + olc::vi2d(-1, 0);
@@ -93,15 +102,17 @@ void Tetrimino::MoveRight(Playfield *playfield) {
         mBlockPosition = newPosition;
 }
 
-void Tetrimino::MoveDown(Playfield *playfield, bool userTriggered) {
+void Tetrimino::MoveDown(Playfield *playfield, bool userTriggered, bool dry) {
     auto newPosition = mBlockPosition + olc::vi2d(0, 1);
     if (canMoveToPosition(playfield, newPosition)) {
         mBlockPosition = newPosition;
-        if (userTriggered)
+        if (userTriggered && !dry)
             playfield->increaseScore(1);
         return;
     }
     isInFinalPosition = true;
+
+    if (dry) return;
 
     for (int x = 0; x < 5; x++)
         for (int y = 0; y < 5; y++)
@@ -151,3 +162,21 @@ void Tetrimino::HardDrop(Playfield *playfield) {
     }
 }
 
+void Tetrimino::DrawGhost(olc::PixelGameEngine *pge, Playfield *playfield) {
+    if (isInFinalPosition) return;
+    olc::vi2d currentPos = mBlockPosition;
+
+    while (!isInFinalPosition) {
+        MoveDown(playfield, false, true);
+    }
+
+    olc::vi2d finalPos = mBlockPosition;
+    mBlockPosition = currentPos;
+    isInFinalPosition = false;
+
+    for (int x = 0; x < 5; x++)
+        for (int y = 0; y < 5; y++)
+            if (mShape[x][y] == 1)
+                pge->DrawRect(playfield->BlockToReal(finalPos + olc::vi2d(x - 2, y - 2)),
+                              olc::vi2d(10, 10));
+}

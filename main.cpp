@@ -6,7 +6,7 @@
 
 
 enum class Scene {
-    START, GAME, END
+    START, GAME, END, PAUSE
 };
 
 class Game : public olc::PixelGameEngine {
@@ -23,18 +23,15 @@ public:
 
     bool OnUserUpdate(float fElapsedTime) override {
         // called once per frame
-        timeSinceLastTick += fElapsedTime;
-
         Clear(olc::BLACK);
 
         switch (scene) {
             case Scene::GAME: {
-                if (GetKey(olc::Key::W).bPressed || GetKey(olc::Key::UP).bPressed)
-                    mTet.Flip(&playfield);
-                if (GetKey(olc::Key::SPACE).bPressed)
-                    mTet.HardDrop(&playfield);
-                if (GetKey(olc::R).bReleased)
-                    StartGame();
+                timeSinceLastTick += fElapsedTime;
+                if (GetKey(olc::Key::W).bPressed || GetKey(olc::Key::UP).bPressed) mTet.Flip(&playfield);
+                if (GetKey(olc::Key::SPACE).bPressed) mTet.HardDrop(&playfield);
+                if (GetKey(olc::R).bReleased) StartGame();
+                if (GetKey(olc::ESCAPE).bPressed) scene = Scene::PAUSE;
 
                 for (auto const&[key, val] : buttonAction) {
                     if (GetKey(key).bHeld || GetKey(key).bPressed || GetKey(key).bReleased)
@@ -71,18 +68,22 @@ public:
                 break;
             }
             case Scene::START: {
-                DrawString({(ScreenWidth() / 2) - 20, (ScreenHeight() / 2) - 7}, "START");
+                DrawCenteredString("START", {ScreenWidth() / 2, ScreenHeight() / 2});
                 if (GetKey(olc::ENTER).bPressed) StartGame();
                 break;
             }
-
             case Scene::END: {
-                DrawString({(ScreenWidth() / 2) - 20, (ScreenHeight() / 2) - 7}, "GAMEOVER");
-                DrawString({(ScreenWidth() / 2) - 20, (ScreenHeight() / 2) + 13}, "SCORE: " + std::to_string(playfield.getScore()));
-                DrawString({25, ScreenHeight() / 2 + 30}, "Press Enter to play again.");
+                DrawCenteredString("GAME OVER", {ScreenWidth() / 2, 50});
+                DrawCenteredString("SCORE: " + std::to_string(playfield.getScore()), {ScreenWidth() / 2, 65});
+                DrawCenteredString("Press Enter to play again.", {ScreenWidth() / 2, ScreenHeight() / 2});
 
                 if (GetKey(olc::ENTER).bPressed) StartGame();
 
+                break;
+            }
+            case Scene::PAUSE: {
+                DrawCenteredString("PAUSED", {ScreenWidth() / 2, ScreenHeight() / 2});
+                if (GetKey(olc::ESCAPE).bPressed) scene = Scene::GAME;
                 break;
             }
         }
@@ -129,6 +130,10 @@ public:
             case UserAction::DOWN:
                 mTet.MoveDown(&playfield);
         }
+    }
+
+    void DrawCenteredString(const std::string& text, const olc::vi2d& pos) {
+        DrawString({pos.x - ((int)text.length() * 4), pos.y - (3)}, text);
     }
 
 private:

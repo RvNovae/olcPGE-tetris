@@ -113,7 +113,7 @@ public:
         if (button.bHeld) {
             if (buttonHeldTime[action] >= (mMoveSpeed - (float(playfield.getLevel()) * mMoveSpeed / 4))) {
                 PerformUserAction(action);
-                buttonHeldTime[action] = 0.0f;
+                buttonHeldTime[action] -= (mMoveSpeed - (float(playfield.getLevel()) * mMoveSpeed / 4));
             } else
                 buttonHeldTime[action] += fElapsedTime;
         }

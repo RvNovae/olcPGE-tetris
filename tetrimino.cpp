@@ -148,6 +148,7 @@ bool Tetrimino::canMoveToPosition(Playfield *playfield, const olc::vi2d &newPosi
         for (int y = 0; y < 5; y++)
             if (mShape[x][y] == 1) {
                 auto blockPosition = newPosition + olc::vi2d(x - 2, y - 2);
+                if (blockPosition.y < 0) return true;
                 if (blockPosition.x < 0 || blockPosition.x >= 10 || blockPosition.y >= 20)
                     return false;
                 if (playfield->IsOccupied(blockPosition))
